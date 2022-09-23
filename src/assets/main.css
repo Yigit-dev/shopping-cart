@@ -1,0 +1,15 @@
+@import "./base.css";
+@import "./flexiblegs.css";
+
+.pageAnimation {
+    animation: bottom 0.8s 0s both;
+}
+.action{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor:pointer;
+}
+.action > *:nth-child(n + 1) {
+    margin-right: 16px;
+}
