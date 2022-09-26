@@ -1,23 +1,23 @@
 <template>
 <div class="card">
     <div class="header">
-        <Text tag="h3" size="xl">Shopping Bag Total : <span id="tot">0</span> $</Text>
+        <Text tag="h3" size="xl">Shopping Bag: {{shoppingCart.length}}</Text>
     </div>
-    <div class="wrap xl-flexbox xl-between xl-center product">
+    <div v-for="cart in shoppingCart" class="wrap xl-flexbox xl-between xl-center product">
         <div class="col sm-1-1">
             <div class="action">
-                <Button size="sm full-radius" color="var(--border-color)">X</Button>
+                <Button size="sm full-radius" color="var(--border-color)" @click="() => $emit('delete',cart.id)">X</Button>
                 <IconHearth color="red" width="28" height="25"/>
             </div>
         </div>
 
         <div class="col sm-1-1">
-            <img width="90" height="90" class="product-img" src="https://i.ibb.co/54s4XfL/1.png" alt="">
+            <img width="90" height="90" class="product-img" src="{{cart.image}}" alt="">
         </div>
 
         <div class="col sm-1-1">
-            <Text tag="p" size="lg">Tshirt</Text>
-            <Text tag="p" size="lg" color="var(--c-darkgray)">Oversize</Text>
+            <Text tag="p" size="lg">{{cart.title}}</Text>
+            <Text tag="p" size="lg" color="var(--c-darkgray)">{{cart.subTitle}}</Text>
         </div>
 
         <div class="col sm-1-2">
@@ -29,7 +29,7 @@
         </div>
 
         <div class="col sm-1-2">
-            <Text tag="h4" size="xl">54$</Text>
+            <Text tag="h4" size="xl">{{cart.price}}$</Text>
         </div>
     </div>
 </div>
@@ -41,7 +41,13 @@ import IconHearth from '../icons/IconHearth.vue';
 import Button from '../Buttons/Button.vue';
 
 export default {
-    components: { Text, IconHearth, Button }
+    components: { Text, IconHearth, Button },
+    props: {
+      shoppingCart: {
+        type: Array,
+        required: true
+      }
+    }
 }
 </script>
 

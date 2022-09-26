@@ -8,7 +8,7 @@
                 <Text tag="h4" size="lg">Temporary amount</Text>
             </div>
             <div class="col">
-                <Text tag="h4" size="lg">$24</Text>
+                <Text tag="h4" size="lg">${{totalAmount.total !== "0.00" ? totalAmount.total - totalAmount.shippingPayment : 0}}</Text>
             </div>
         </div>
         <div class="wrap xl-flexbox xl-between">
@@ -16,7 +16,7 @@
                 <Text tag="h4" size="lg">Shipping</Text>
             </div>
             <div class="col">
-                <Text tag="h4" size="lg">$5</Text>
+                <Text tag="h4" size="lg">${{ totalAmount.shippingPayment }}</Text>
             </div>
         </div>
         <hr>
@@ -25,7 +25,7 @@
                 <Text tag="h4" size="lg" fontWeight="700">The total amount of</Text>
             </div>
             <div class="col">
-                <Text tag="h4" size="lg" fontWeight="700">$29</Text>
+                <Text tag="h4" size="lg" fontWeight="700">${{ totalAmount.total }}</Text>
             </div>
         </div>
         <Button size="xs" color="var(--c-purple)"><Text tag="h3" size="lg">Buy</Text></Button>
@@ -34,9 +34,17 @@
 <script>
 import Button from '../Buttons/Button.vue';
 import Text from '../Texts/Text.vue';
+
 export default {
     name: 'TotalAmount',
-    components: {Button,Text}
+    components: {Button,Text},
+    props: {
+        totalAmount: {
+            type: String,
+            default: "0.00",
+            required: true,
+        }
+    }
 }
 </script>
 <style scoped>
