@@ -22,9 +22,9 @@
 
         <div class="col sm-1-2">
             <div class="quant">
-                <Button size="sm full-radius" color="var(--c-darkgray)"><Text size="lg" color="white"> - </Text></Button>
-                <Text>1</Text>
-                <Button size="sm full-radius" color="var(--c-darkgray)"><Text size="lg" color="white"> + </Text></Button>
+                <Button @click="decrementQuantity" size="sm full-radius" color="var(--c-darkgray)"><Text size="lg" color="white"> - </Text></Button>
+                <Text>{{quantity}}</Text>
+                <Button @click="increaseQuantity" size="sm full-radius" color="var(--c-darkgray)"><Text size="lg" color="white"> + </Text></Button>
             </div>
         </div>
 
@@ -46,6 +46,24 @@ export default {
       shoppingCart: {
         type: Array,
         required: true
+      }
+    },
+    data(){
+      return{
+        quantity: 1
+      }
+    },
+    watch: {
+      quantity(){
+        return this.$emit("quantity", this.quantity)
+      }
+    },
+    methods: {
+      increaseQuantity(){
+        this.quantity += 1
+      },
+      decrementQuantity(){
+        this.quantity !== 1 ? this.quantity -= 1 : 1
       }
     }
 }

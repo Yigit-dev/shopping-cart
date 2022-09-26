@@ -3,7 +3,8 @@
         <div class="col xl-9-12 lg-8-12 md-1-1">
             <ShoppingCard
                 :shoppingCart="shoppingCart" 
-                @delete="deleteFromCart" />
+                @delete="deleteFromCart"
+                @quantity="setQuantity" />
         </div>
         <div class="col xl-3-12 lg-4-12 md-1-1">
             <TotalAmount 
@@ -21,7 +22,8 @@ export default {
     data(){
         return{
             shoppingCart: [],
-            shippingPayment: 5
+            shippingPayment: 5,
+            quantity: 1
         }
     },
     created(){
@@ -29,9 +31,9 @@ export default {
     },
     computed: {
         totalAmount(){
-            let total = 0 
+            let total = 0
             this.shoppingCart.forEach(item => {
-                total += parseFloat(item.price, 10)
+                total += parseFloat(item.price * this.quantity, 10)
                 total += this.shippingPayment
             });
             return {
@@ -50,6 +52,9 @@ export default {
             this.$appAxios.delete(`/shoppingCart/${id}`).then(() => {
             this.getProductCart()
             })
+        },
+        setQuantity(quantity){
+            this.quantity = quantity
         }
     }
 }
