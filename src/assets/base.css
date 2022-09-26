@@ -12,6 +12,7 @@
   --c-red: #ec5252;
   --c-green: #71C562;
   --c-darkgray: darkgray;
+  --c-disabled: #f0f0f0;
 }
 
 [data-theme="dark"] {

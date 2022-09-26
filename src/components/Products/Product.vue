@@ -1,15 +1,20 @@
 <template>
     <div class="col"> 
         <div class="product-card">
-          <img src="https://i.ibb.co/54s4XfL/1.png" alt="1">
+          <img src="{{product.image}}" alt="1">
           <div class="product-card-hover-box">
             <div class="product-card-detail-box">
               <div class="product-info">
-                <Text tag="h3" size="lg" color="#000">LittleMess* Original</Text>
-                <Text tag="h5" size="md" color="var(--c-darkgray)">Unisex T-Shirt</Text>  
+                <Text tag="h3" size="lg" color="#000">{{product.title}}</Text>
+                <Text tag="h5" size="md" color="var(--c-darkgray)">{{product.subTitle}}</Text>  
               </div>
-              <Button size="md" color="var(--c-orange)">
+              <Button size="md" color="var(--c-orange)" 
+                v-if="product.isAvailable && product.isStock" 
+                @click="addToCart">
                 <Text size="sm">ADD TO CART</Text>
+              </Button>
+              <Button v-else size="md" color="var(--c-disabled)" disabled="true">
+                <Text size="sm">No Stock</Text>
               </Button>
             </div>
           </div>
@@ -18,12 +23,29 @@
 </template>
 
 <script>
-    import Button from '../Buttons/Button.vue';
-    import Text from '../Texts/Text.vue';
-    
-    export default {
-        components: { Button, Text }
+import Button from '../Buttons/Button.vue';
+import Text from '../Texts/Text.vue';
+
+export default {
+    components: { Button, Text },
+    props: {
+        product: {
+            type: Object,
+            required: true
+        }
+    },
+    methods:{
+        addToCart(){
+            this.$appAxios.post('/shoppingCart', {...this.product})
+                .then(response => {
+                    console.log(response)
+                })
+                .catch(error => {
+                    console.log(error)
+                })
+        }
     }
+}
 </script>
     
 <style scoped>

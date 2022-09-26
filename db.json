@@ -1,0 +1,46 @@
+{
+  "products": [
+    {
+      "id": 1,
+      "title": "T-shirt 1",
+      "subTitle": "Oversize T-shirt",
+      "image": "https://i.ibb.co/sstC5z8/5.png",
+      "price": "35.99",
+      "isAvailable": true,
+      "isStock": true,
+      "url": "#"
+    },
+    {
+      "id": 2,
+      "title": "T-shirt 2",
+      "subTitle": "Fit T-shirt",
+      "image": "https://i.ibb.co/4VwfJMw/8.png",
+      "price": "24.99",
+      "isAvailable": true,
+      "isStock": true,
+      "url": "#"
+    },
+    {
+      "id": 3,
+      "title": "T-shirt 3",
+      "subTitle": "Oversize T-shirt",
+      "image": "https://i.ibb.co/Hd7jNH9/9.png",
+      "price": "42.99",
+      "isAvailable": true,
+      "isStock": true,
+      "url": "#"
+    }
+  ],
+  "shoppingCart": [
+    {
+      "id": 2,
+      "title": "T-shirt 2",
+      "subTitle": "Fit T-shirt",
+      "image": "https://i.ibb.co/4VwfJMw/8.png",
+      "price": "24.99",
+      "isAvailable": true,
+      "isStock": true,
+      "url": "#"
+    }
+  ]
+}
