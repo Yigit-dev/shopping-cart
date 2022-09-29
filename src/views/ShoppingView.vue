@@ -1,10 +1,12 @@
 <template>
     <div class="wrap xl-gutter-40">
-        <div class="col xl-9-12 lg-8-12 md-1-1">
+        <div class="col xl-9-12 lg-8-12 md-1-1"> 
+            <Text tag="h3" size="xl">Shopping Bag: {{shoppingCart.length}}</Text>
             <ShoppingCard
-                :shoppingCart="shoppingCart" 
-                @delete="deleteFromCart"
-                @quantity="setQuantity" />
+                v-for="cart in shoppingCart"
+                :shoppingCart="cart"
+                @delete="deleteFromCart" 
+                @calulateTotalPrice="calulateTotalPrice"/>
         </div>
         <div class="col xl-3-12 lg-4-12 md-1-1">
             <TotalAmount 
@@ -15,15 +17,16 @@
 <script>
 import ShoppingCard from "../components/Cards/ShoppingCard.vue";
 import TotalAmount from "../components/Cards/TotalAmount.vue";
+import Text from "../components/Texts/Text.vue";
 
 export default {
     name: "ShoppingView",
-    components: { ShoppingCard, TotalAmount },
+    components: { ShoppingCard, TotalAmount, Text },
     data(){
         return{
             shoppingCart: [],
             shippingPayment: 5,
-            quantity: 1
+            totalPrice: 0
         }
     },
     created(){
@@ -33,11 +36,10 @@ export default {
         totalAmount(){
             let total = 0
             this.shoppingCart.forEach(item => {
-                total += parseFloat(item.price * this.quantity, 10)
-                total += this.shippingPayment
+                total += parseFloat(item.price, 10) * item.quantity
             });
             return {
-                total: total.toFixed(2),
+                total: total,
                 shippingPayment: this.shippingPayment
             }
         }
@@ -45,16 +47,16 @@ export default {
     methods: {
         async getProductCart(){
             await this.$appAxios.get('/shoppingCart').then(response => {
-            this.shoppingCart = response.data
+                this.shoppingCart = response.data
             })
         },
         deleteFromCart(id){
             this.$appAxios.delete(`/shoppingCart/${id}`).then(() => {
-            this.getProductCart()
+                this.getProductCart()
             })
         },
-        setQuantity(quantity){
-            this.quantity = quantity
+        calulateTotalPrice(price){
+            this.totalPrice += price
         }
     }
 }

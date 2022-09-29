@@ -1,35 +1,32 @@
 <template>
 <div class="card">
-    <div class="header">
-        <Text tag="h3" size="xl">Shopping Bag: {{shoppingCart.length}}</Text>
-    </div>
-    <div v-for="cart in shoppingCart" class="wrap xl-flexbox xl-between xl-center product">
-        <div class="col sm-1-1">
+    <div class="wrap xl-flexbox xl-between xl-center product">
+        <div class="col xl-1-7 sm-1-1">
             <div class="action">
-                <Button size="sm full-radius" color="var(--border-color)" @click="() => $emit('delete',cart.id)">X</Button>
+                <Button size="sm full-radius" color="var(--border-color)" @click="() => $emit('delete',shoppingCart.id)">X</Button>
                 <IconHearth color="red" width="28" height="25"/>
             </div>
         </div>
 
-        <div class="col sm-1-1">
-            <img width="90" height="90" class="product-img" src="{{cart.image}}" alt="">
+        <div class="col xl-2-7 sm-1-1">
+            <img width="90" height="90" class="product-img" :src="shoppingCart.image" :alt="shoppingCart.title">
         </div>
 
-        <div class="col sm-1-1">
-            <Text tag="p" size="lg">{{cart.title}}</Text>
-            <Text tag="p" size="lg" color="var(--c-darkgray)">{{cart.subTitle}}</Text>
+        <div class="col xl-2-7 sm-1-1">
+            <Text tag="p" size="lg">{{shoppingCart.title}}</Text>
+            <Text tag="p" size="lg" color="var(--c-darkgray)">{{shoppingCart.subTitle}}</Text>
         </div>
 
-        <div class="col sm-1-2">
+        <div class="col xl-1-7 sm-1-2">
             <div class="quant">
-                <Button @click="decrementQuantity" size="sm full-radius" color="var(--c-darkgray)"><Text size="lg" color="white"> - </Text></Button>
+                <Button @click="decreaseQuantity" size="sm full-radius" color="var(--c-darkgray)"><Text size="lg" color="white"> - </Text></Button>
                 <Text>{{quantity}}</Text>
                 <Button @click="increaseQuantity" size="sm full-radius" color="var(--c-darkgray)"><Text size="lg" color="white"> + </Text></Button>
             </div>
         </div>
 
-        <div class="col sm-1-2">
-            <Text tag="h4" size="xl">{{cart.price}}$</Text>
+        <div class="col xl-1-7 sm-1-2">
+            <Text tag="h4" size="xl">{{shoppingCart.price}}$</Text>
         </div>
     </div>
 </div>
@@ -48,22 +45,26 @@ export default {
         required: true
       }
     },
-    data(){
-      return{
-        quantity: 1
-      }
-    },
-    watch: {
+    computed: {
       quantity(){
-        return this.$emit("quantity", this.quantity)
+        this.$emit('calulateTotalPrice', this.shoppingCart.price * this.shoppingCart.quantity)
+        return this.shoppingCart.quantity
       }
     },
     methods: {
-      increaseQuantity(){
-        this.quantity += 1
+      decreaseQuantity(){
+        this.shoppingCart.quantity !== 1 ? this.shoppingCart.quantity-- : 1
+        
+        this.$appAxios.patch(`/shoppingCart/${this.shoppingCart.id}`, {
+          quantity: this.quantity
+        }).then(res => res.data)
       },
-      decrementQuantity(){
-        this.quantity !== 1 ? this.quantity -= 1 : 1
+      increaseQuantity(){
+        this.shoppingCart.quantity++
+
+        this.$appAxios.patch(`/shoppingCart/${this.shoppingCart.id}`, {
+          quantity: this.quantity
+        }).then(res => res.data)
       }
     }
 }

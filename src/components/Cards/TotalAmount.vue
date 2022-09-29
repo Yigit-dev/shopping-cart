@@ -1,4 +1,4 @@
-<template lang="">
+<template>
     <div class="card">
         <div class="card-title">
             <Text tag="h3" size="xl" fontWeight="700">The total amount of</Text>
@@ -8,7 +8,7 @@
                 <Text tag="h4" size="lg">Temporary amount</Text>
             </div>
             <div class="col">
-                <Text tag="h4" size="lg">${{totalAmount.total !== "0.00" ? totalAmount.total - totalAmount.shippingPayment : 0}}</Text>
+                <Text tag="h4" size="lg">${{totalAmount.total}}</Text>
             </div>
         </div>
         <div class="wrap xl-flexbox xl-between">
@@ -25,7 +25,7 @@
                 <Text tag="h4" size="lg" fontWeight="700">The total amount of</Text>
             </div>
             <div class="col">
-                <Text tag="h4" size="lg" fontWeight="700">${{ totalAmount.total }}</Text>
+                <Text tag="h4" size="lg" fontWeight="700">${{ totalAmount.total !== 0 ? totalAmount.total + totalAmount.shippingPayment : 0}}</Text>
             </div>
         </div>
         <Button size="xs" color="var(--c-purple)"><Text tag="h3" size="lg">Buy</Text></Button>
@@ -40,8 +40,7 @@ export default {
     components: {Button,Text},
     props: {
         totalAmount: {
-            type: String,
-            default: "0.00",
+            type: Object,
             required: true,
         }
     }
