@@ -10,7 +10,7 @@ export default {
     props: {
         color: {
             types: String,
-            default: "blue",
+            default: "transparent",
         },
         size: {
             type: String,
@@ -34,6 +34,7 @@ export default {
         display: flex;
         justify-content: center;
         align-items: center;
+        border: none;
         border-radius: 6px;
         transition: 200ms all;
         border: 1px solid transparent;

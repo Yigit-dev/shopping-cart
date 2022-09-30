@@ -8,10 +8,13 @@
                 <Text tag="h3" size="lg" color="#000">{{product.title}}</Text>
                 <Text tag="h5" size="md" color="var(--c-darkgray)">{{product.subTitle}}</Text>  
               </div>
-              <Button size="md" color="var(--c-orange)" 
-                v-if="product.isAvailable && product.isStock" 
+              <Button size="md" color="var(--c-orange)"
+                v-if="!product.isPurchased && product.isStock" 
                 @click="addToCart">
                 <Text size="sm">ADD TO CART</Text>
+              </Button>
+              <Button size="xs" v-else-if="product.isPurchased" @click="deleteFromCart(product.id)">
+                <IconCheck width="36" height="36" />
               </Button>
               <Button v-else size="md" color="var(--c-disabled)" disabled="true">
                 <Text size="sm">No Stock</Text>
@@ -25,9 +28,10 @@
 <script>
 import Button from '../Buttons/Button.vue';
 import Text from '../Texts/Text.vue';
+import IconCheck from '../icons/IconCheck.vue';
 
 export default {
-    components: { Button, Text },
+    components: { Button, Text, IconCheck },
     props: {
         product: {
             type: Object,
@@ -36,14 +40,25 @@ export default {
     },
     methods:{
         addToCart(){
+            this.product.isPurchased = true
             this.$appAxios.post('/shoppingCart', {...this.product})
-                .then(response => {
-                    console.log(response)
+                .then(() => {
+                    this.$appAxios.patch(`/products/${this.product.id}`, {
+                        isPurchased: true
+                    }).then(res => res)
                 })
                 .catch(error => {
                     console.log(error)
                 })
-        }
+        },
+        deleteFromCart(id){
+            this.product.isPurchased = false
+            this.$appAxios.delete(`/shoppingCart/${id}`).then(() => {
+                this.$appAxios.patch(`/products/${this.product.id}`, {
+                    isPurchased: false
+                }).then(res => res)
+            })
+        },
     }
 }
 </script>
@@ -79,7 +94,7 @@ export default {
 .product-card-hover-box .product-card-detail-box {
     background: rgba(255,255,255,0.95);
     position:absolute;
-    width: auto;
+    width: 35%;
     height:auto;
     left: 50%;
     transform: translate(-50%, -50%);
@@ -107,5 +122,8 @@ export default {
 }
 .product-card-hover-box .product-card-detail-box .product-info{
     padding-bottom: 16px;
+}
+.product-card-detail-box button{
+    width: 100%;
 }
 </style>

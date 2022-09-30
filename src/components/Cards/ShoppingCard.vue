@@ -65,7 +65,7 @@ export default {
         this.$appAxios.patch(`/shoppingCart/${this.shoppingCart.id}`, {
           quantity: this.quantity
         }).then(res => res.data)
-      }
+      },
     }
 }
 </script>
